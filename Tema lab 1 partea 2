@@ -1,0 +1,21 @@
+import java.util.Scanner;
+
+public class SumaNumerePare {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Introdu valoarea lui n: ");
+        int n = scanner.nextInt();
+
+        // Varianta 1: Folosind o buclă for (logică pas cu pas)
+        long sumaIterativa = 0;
+        for (int i = 1; i <= n; i++) {
+            sumaIterativa += 2 * i;
+        }
+System.out.println("Suma primelor " + n + " numere pare (iterativ) este: " + sumaIterativa);
+        System.out.println("Suma primelor " + n + " numere pare (formulă) este: " + sumaFormula);
+        
+        scanner.close();
+    }
+}
