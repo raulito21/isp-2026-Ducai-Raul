@@ -1,0 +1,73 @@
+package isp.lab7.safehome;
+
+import java.util.Scanner;
+
+public class SafeHome {
+    public static void main(String[] args) {
+        DoorLockController controller = new DoorLockController();
+        Scanner scanner = new Scanner(System.in);
+        boolean running = true;
+
+        while (running) {
+            System.out.println("\n1. Admin");
+            System.out.println("2. Tenant");
+            System.out.println("0. Exit");
+            System.out.print("Select role: ");
+            int role = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (role) {
+                case 1:
+                    System.out.println("\n1. Add Tenant");
+                    System.out.println("2. Remove Tenant");
+                    System.out.println("3. View Access Logs");
+                    System.out.print("Select option: ");
+                    int adminOpt = scanner.nextInt();
+                    scanner.nextLine();
+
+                    if (adminOpt == 1) {
+                        System.out.print("Tenant Name: ");
+                        String name = scanner.nextLine();
+                        System.out.print("Tenant Pin: ");
+                        String pin = scanner.nextLine();
+                        try {
+                            controller.addTenant(pin, name);
+                            System.out.println("Tenant added.");
+                        } catch (Exception e) {
+                            System.out.println("Error: " + e.getMessage());
+                        }
+                    } else if (adminOpt == 2) {
+                        System.out.print("Tenant Name: ");
+                        String name = scanner.nextLine();
+                        try {
+                            controller.removeTenant(name);
+                            System.out.println("Tenant removed.");
+                        } catch (Exception e) {
+                            System.out.println("Error: " + e.getMessage());
+                        }
+                    } else if (adminOpt == 3) {
+                        for (AccessLog log : controller.getAccessLogs()) {
+                            System.out.println(log);
+                        }
+                    }
+                    break;
+
+                case 2:
+                    System.out.print("\nEnter Pin: ");
+                    String pin = scanner.nextLine();
+                    try {
+                        DoorStatus status = controller.enterPin(pin);
+                        System.out.println("Door is now: " + status);
+                    } catch (Exception e) {
+                        System.out.println("Error: " + e.getMessage());
+                    }
+                    break;
+
+                case 0:
+                    running = false;
+                    break;
+            }
+        }
+        scanner.close();
+    }
+}
