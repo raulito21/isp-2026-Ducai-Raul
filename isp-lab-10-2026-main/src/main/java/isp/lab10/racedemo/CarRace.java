@@ -1,72 +1,18 @@
-package isp.lab10.racedemo;
-import java.awt.*;
-import java.io.File;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
+package isp.lab10.raceapp;
+
 import javax.swing.*;
+import java.awt.*;
 
-public class CarRace {
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Car Race");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        CarPanel carPanel = new CarPanel();
-
-        frame.getContentPane().add(carPanel);
-        frame.pack();
-        frame.setSize(500,300);
-        frame.setVisible(true);
-
-        Car car1 = new Car("Red car", carPanel);
-        Car car2 = new Car("Blue car", carPanel);
-        Car car3 = new Car("Green car", carPanel);
-        Car car4 = new Car("Yellow car", carPanel);
-    }
-    
-}
-
-class Car extends Thread {
-    private String name;
-    private int distance = 0;
-    private CarPanel carPanel;
-
-    public Car(String name, CarPanel carPanel) {
-        //set thread name;
-        setName(name);
-        this.name = name;
-        this.carPanel = carPanel;
-    }
-
-    public void run() {
-        while (distance < 400) {
-            // simulate the car moving at a random speed
-            int speed = (int) (Math.random() * 10) + 1;
-            distance += speed;
-
-            carPanel.updateCarPosition(name, distance);
-
-            try {
-                // pause for a moment to simulate the passage of time
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
-        carPanel.carFinished(name);
-    }
-}
-
-class CarPanel extends JPanel {
-    private int[] carPositions;
-    private String[] carNames;
-    private Color[] carColors;
+public class CarPanel extends JPanel {
+    private int[] pozitii;
+    private String[] identificatori;
+    private Color[] nuante;
+    private int locCurent = 1; // Pentru a calcula clasamentul (Exercițiul 5)
 
     public CarPanel() {
-        carPositions = new int[4];
-        carNames = new String[]{"Red car", "Blue car", "Green car", "Yellow car"};
-        carColors = new Color[]{Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW};
+        pozitii = new int[4];
+        identificatori = new String[]{"Red car", "Blue car", "Green car", "Yellow car"};
+        nuante = new Color[]{Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW};
     }
 
     @Override
@@ -74,32 +20,33 @@ class CarPanel extends JPanel {
         super.paintComponent(g);
 
         for (int i = 0; i < 4; i++) {
-            int yPos = 50 + i * 50; // Vertical position of the car
-            int xPos = carPositions[i]; // Horizontal position of the car
-            int carSize = 30; // Size of the car
+            int coordY = 50 + i * 50;
+            int coordX = pozitii[i];
+            int marime = 30;
 
-            g.setColor(carColors[i]);
-            g.fillOval(xPos, yPos, carSize, carSize);
+            g.setColor(nuante[i]);
+            g.fillOval(coordX, coordY, marime, marime);
             g.setColor(Color.BLACK);
-            g.drawString(carNames[i], xPos, yPos - 5);
+            g.drawString(identificatori[i], coordX, coordY - 5);
         }
     }
 
-    public void updateCarPosition(String carName, int distance) {
-        int carIndex = getCarIndex(carName);
-        if (carIndex != -1) {
-            carPositions[carIndex] = distance;
+    public void updateCarPosition(String masina, int dist) {
+        int index = getCarIndex(masina);
+        if (index != -1) {
+            pozitii[index] = dist;
             repaint();
         }
     }
 
-    public void carFinished(String carName) {
-        System.out.println("Car finished race.");
+    public synchronized void carFinished(String masina) {
+        System.out.println(masina + " finished race pe locul " + locCurent);
+        locCurent++;
     }
 
-    private int getCarIndex(String carName) {
+    private int getCarIndex(String masina) {
         for (int i = 0; i < 4; i++) {
-            if (carNames[i].equals(carName)) {
+            if (identificatori[i].equals(masina)) {
                 return i;
             }
         }
