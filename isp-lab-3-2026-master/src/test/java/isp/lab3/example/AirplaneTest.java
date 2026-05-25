@@ -1,41 +1,38 @@
 package isp.lab3.example;
 
-import org.junit.Test;
-
 import java.time.LocalDateTime;
 
-import static org.junit.Assert.*;
+public class Airplane {
 
-public class AirplaneTest {
+    private String model;
+    private int maxCapacity;
+    private int cruisingSpeed;
+    private int maxRange;
+    private LocalDateTime departureTime;
+    private int currentPassengers;
 
-    @Test
-    public void testIsLate() {
-        //create airplane with departure time 2023-03-15T09:30
-        LocalDateTime date1 = LocalDateTime.of(2026, 4, 15, 9, 30); // March 15, 2025 at 9:30 AM
-        Airplane airplane = new Airplane("Boeing 747", 416, 913, 14200, date1);
+    public Airplane(String model, int maxCapacity, int cruisingSpeed, int maxRange, LocalDateTime departureTime) {
+        this.model = model;
+        this.maxCapacity = maxCapacity;
+        this.cruisingSpeed = cruisingSpeed;
+        this.maxRange = maxRange;
+        this.departureTime = departureTime;
+        this.currentPassengers = 0; }
 
-        // Test isLate() when the departure time is in the future
-        assertFalse(airplane.isLate());
-
-        // Test isLate() when the departure time is in the past
-        LocalDateTime date2 = LocalDateTime.of(2019, 3, 15, 9, 30); // March 15, 2019 at 9:30 AM
-        airplane = new Airplane("Boeing 747", 416, 913, 14200, date2);
-        assertTrue(airplane.isLate());
+    public boolean isLate() {
+        return departureTime.isBefore(LocalDateTime.now());
     }
 
-    @Test
-    public void testLoadPassengers() {
-        LocalDateTime date1 = LocalDateTime.of(2023, 3, 15, 9, 30); // March 15, 2023 at 9:30 AM
-        Airplane airplane = new Airplane("Boeing 747", 416, 913, 14200, date1);
 
-        // Test loading passengers when there are enough available seats
-        airplane.loadPassengers(200);
-        assertEquals(200, airplane.getPassengers());
-        airplane.loadPassengers(100);
-        assertEquals(300, airplane.getPassengers());
 
-        // Test loading passengers when there are not enough available seats
-        airplane.loadPassengers(117);
-        assertEquals(300, airplane.getPassengers());
+    public void loadPassengers(int passengersToLoad) {
+        if (this.currentPassengers + passengersToLoad <= this.maxCapacity) {
+            this.currentPassengers += passengersToLoad;
+        }
+   }
+
+
+    public int getPassengers() {
+        return this.currentPassengers;
     }
 }

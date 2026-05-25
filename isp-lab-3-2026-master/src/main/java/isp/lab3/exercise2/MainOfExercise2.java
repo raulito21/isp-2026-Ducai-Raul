@@ -1,34 +1,25 @@
 package isp.lab3.exercise2;
-private int length=2;
-private int width=1;
-private  string color ='red';
-public rectangle(){}
-    public rectangle(int length, int width){
-    this.length=length;
-    this.width=width;}
-    public rectangle(int length, int width,string color){
-    this.length=length;
-    this.width=width;
-    this.color=color;
-}
-    public int getlength(){
-    return this.length;
-}
-    public int getwidth(){
-    return this.width;}
-    public string getcolor(){
-    return this.color;}
-    public class MainOfExercise2 {
-    public int getparameter()
-    {
-        return 2*this.length+2*this.width;
-    }
-    public int aria(){
-        retirm this.length*this.width;
-    
-    }
-    public string toString()
-    {
-        return "rectangle width"+this.width
+
+public class MainOfExercise2 {
+
+    public static void main(String[] args) {
+
+        System.out.println("=== Testare Dreptunghi Custom ===");
+        Rectangle customRect = new Rectangle(5, 3, "blue");
+
+        System.out.println("Lungime: " + customRect.getLength());
+        System.out.println("Lățime: " + customRect.getWidth());
+        System.out.println("Culoare: " + customRect.getColor());
+        System.out.println("Perimetru: " + customRect.getPerimeter());
+        System.out.println("Arie: " + customRect.getArea());
+
+        System.out.println("\n=== Testare Dreptunghi Default ===");
+        Rectangle defaultRect = new Rectangle();
+
+        System.out.println("Lungime default: " + defaultRect.getLength());
+        System.out.println("Lățime default: " + defaultRect.getWidth());
+        System.out.println("Culoare default: " + defaultRect.getColor());
+        System.out.println("Perimetru: " + defaultRect.getPerimeter());
+        System.out.println("Arie: " + defaultRect.getArea());
     }
 }
